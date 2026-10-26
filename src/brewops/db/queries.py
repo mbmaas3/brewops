@@ -127,9 +127,22 @@ def get_machine_health(conn: sqlite3.Connection, machine_id: int) -> dict[str, A
             (machine_id,),
         )
     ]
+    specialty = conn.execute(
+        """
+        SELECT be.drink_type AS name, COALESCE(dt.label, be.drink_type) AS label, COUNT(*) AS count
+        FROM brew_events be
+        LEFT JOIN drink_types dt ON dt.name = be.drink_type
+        WHERE be.machine_id = ?
+        GROUP BY be.drink_type
+        ORDER BY count DESC, label ASC
+        LIMIT 1
+        """,
+        (machine_id,),
+    ).fetchone()
     return machine | {
         "brew_count": brews["count"],
         "last_brew": brews["last_brew"],
         "last_maintenance": dict(last_maintenance) if last_maintenance else None,
         "recent_errors": recent_errors,
+        "specialty": dict(specialty) if specialty else None,
     }

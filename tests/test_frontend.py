@@ -37,6 +37,7 @@ def test_static_assets_served(db):
     js = request(get_app(), "GET", "/app.js")
     assert js.status == 200
     assert "loadDashboard" in js.text
+    assert "Specialty:" in js.text
     css = request(get_app(), "GET", "/style.css")
     assert css.status == 200
     assert "bar-fill" in css.text

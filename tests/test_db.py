@@ -65,6 +65,30 @@ def test_machine_health(conn):
     assert health["recent_errors"][0]["error_code"] == "E42"
 
 
+def test_machine_health_specialty_is_most_brewed(conn):
+    insert_brew(conn, 1, "latte", "2026-06-01 08:00:00", 40.0, 88.0, "csv")
+    insert_brew(conn, 1, "espresso", "2026-06-01 09:00:00", 27.0, 92.0, "csv")
+    insert_brew(conn, 1, "espresso", "2026-06-01 10:00:00", 27.0, 92.0, "csv")
+    insert_brew(conn, 2, "lungo", "2026-06-01 10:00:00", 38.0, 90.0, "csv")
+    conn.commit()
+
+    assert get_machine_health(conn, 1)["specialty"] == {
+        "name": "espresso", "label": "Espresso", "count": 2,
+    }
+
+
+def test_machine_health_specialty_tie_is_deterministic(conn):
+    insert_brew(conn, 3, "lungo", "2026-06-01 08:00:00", 38.0, 90.0, "manual")
+    insert_brew(conn, 3, "americano", "2026-06-01 09:00:00", 30.0, 90.0, "manual")
+    conn.commit()
+
+    assert get_machine_health(conn, 3)["specialty"]["name"] == "americano"
+
+
+def test_machine_health_specialty_none_without_brews(conn):
+    assert get_machine_health(conn, 4)["specialty"] is None
+
+
 def test_machine_health_unknown_machine(conn):
     assert get_machine_health(conn, 999) is None
 
