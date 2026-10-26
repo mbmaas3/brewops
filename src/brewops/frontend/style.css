@@ -1,25 +1,25 @@
 /* BrewOps — warm coffee-house theme. Plain CSS, no framework, no web fonts. */
 
 :root {
-  /* warm neutrals — cream paper & ceramic, biased toward the brass accent */
-  --paper: #f1e9dc;
-  --paper-deep: #e9decb;
-  --panel: #fbf7f0;
-  --ink: #2a1c12;
-  --ink-soft: #7a6552;
-  --line: #e4d8c4;
+  /* rainbow palette — vibrant & bold */
+  --paper: #f8f8ff;
+  --paper-deep: #f0e6ff;
+  --panel: #ffffff;
+  --ink: #1a1a2e;
+  --ink-soft: #666699;
+  --line: #e0d5ff;
 
-  /* accent — burnished espresso-machine brass & crema (the single bold hue) */
-  --brass: #b9812f;
-  --brass-deep: #8a5a1c;
-  --crema: #d9b382;
-  --roast: #43301f;
+  /* rainbow accent — red, orange, yellow, green, cyan, blue, purple */
+  --brass: #ff6b35;
+  --brass-deep: #ff3b30;
+  --crema: #ffa500;
+  --roast: #2c003e;
 
-  /* semantic state — separate from the accent */
-  --ok: #3f7a3a;
-  --ok-bg: #e7efe2;
-  --warn: #a3311f;
-  --warn-bg: #f6e6e0;
+  /* semantic state — rainbow themed */
+  --ok: #00d084;
+  --ok-bg: #d4f4e6;
+  --warn: #ff6b35;
+  --warn-bg: #ffe6d5;
 
   --radius: 14px;
   --radius-sm: 9px;
@@ -44,8 +44,8 @@ body {
   -webkit-font-smoothing: antialiased;
   background-color: var(--paper);
   background-image:
-    radial-gradient(1200px 520px at 12% -8%, rgb(217 179 130 / 0.20), transparent 60%),
-    radial-gradient(1000px 620px at 108% 12%, rgb(138 90 28 / 0.10), transparent 55%);
+    radial-gradient(1200px 520px at 12% -8%, rgb(255 107 53 / 0.15), transparent 60%),
+    radial-gradient(1000px 620px at 108% 12%, rgb(100 200 255 / 0.15), transparent 55%);
   background-attachment: fixed;
 }
 
@@ -69,10 +69,10 @@ body > * {
 /* ---- header: café signage ---- */
 header {
   background:
-    linear-gradient(135deg, var(--roast) 0%, #2c1d11 100%);
-  color: #f7ede0;
+    linear-gradient(135deg, #ff3b30 0%, #6366f1 50%, #3b82f6 100%);
+  color: #ffffff;
   padding: 1.9rem 2rem 1.7rem;
-  border-bottom: 3px solid var(--brass);
+  border-bottom: 3px solid #ff6b35;
   box-shadow: var(--shadow);
 }
 
@@ -86,12 +86,12 @@ header h1 {
 }
 
 header h1::first-letter {
-  color: var(--crema);
+  color: #ffd700;
 }
 
 .tagline {
   margin: 0.4rem 0 0;
-  color: var(--crema);
+  color: #00ff9f;
   font-size: 0.86rem;
   letter-spacing: 0.11em;
   text-transform: uppercase;
@@ -157,7 +157,7 @@ main {
   box-shadow: var(--shadow);
 }
 
-/* section eyebrow: small-caps label with a brass tick */
+/* section eyebrow: small-caps label with a rainbow tick */
 .panel h2 {
   display: flex;
   align-items: center;
@@ -168,14 +168,14 @@ main {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--brass-deep);
+  color: #ff6b35;
 }
 
 .panel h2::before {
   content: "";
   width: 1.4rem;
   height: 2px;
-  background: linear-gradient(90deg, var(--brass), var(--crema));
+  background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
   border-radius: 2px;
 }
 
@@ -203,7 +203,7 @@ main {
   position: absolute;
   inset: 0 0 auto 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--brass), var(--crema));
+  background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
 }
 
 .tile:hover {
@@ -213,16 +213,16 @@ main {
 
 /* featured KPI — the headline total reads as the focal point of the band */
 .stat-tiles .tile:first-child {
-  background: linear-gradient(135deg, var(--roast) 0%, #2c1d11 100%);
-  border-color: var(--brass-deep);
+  background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%);
+  border-color: #ff6b35;
 }
 
 .stat-tiles .tile:first-child .tile-number {
-  color: #fbf3e6;
+  color: #ffffff;
 }
 
 .stat-tiles .tile:first-child .tile-label {
-  color: var(--crema);
+  color: #ffd700;
 }
 
 .tile-number {
@@ -231,7 +231,7 @@ main {
   font-size: 2.9rem;
   font-weight: 700;
   line-height: 1;
-  color: var(--roast);
+  color: #ff6b35;
   font-variant-numeric: tabular-nums;
 }
 
@@ -281,7 +281,7 @@ main {
   display: block;
   height: 100%;
   min-width: 4px;
-  background: linear-gradient(90deg, var(--crema), var(--brass));
+  background: linear-gradient(90deg, #ff6b35, #ffa500, #ffff00, #00ff00, #0000ff);
   border-radius: 999px;
   transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -289,7 +289,7 @@ main {
 .bar-count {
   text-align: right;
   font-weight: 700;
-  color: var(--brass-deep);
+  color: #ff6b35;
   font-variant-numeric: tabular-nums;
 }
 
@@ -303,13 +303,13 @@ main {
 }
 
 .timeline-bar {
-  fill: var(--crema);
+  fill: #ffa500;
   rx: 1.5px;
   transition: fill 0.12s ease;
 }
 
 .timeline-bar:hover {
-  fill: var(--brass);
+  fill: #ff6b35;
 }
 
 /* ---- machine cards: ceramic tiles with a severity stripe ---- */
@@ -322,7 +322,7 @@ main {
 .card {
   position: relative;
   border: 1px solid var(--line);
-  border-left: 4px solid var(--crema);
+  border-left: 4px solid #00d4ff;
   border-radius: var(--radius-sm);
   padding: 1.1rem 1.2rem;
   font-size: 0.88rem;
@@ -334,7 +334,7 @@ main {
 .card:has(.errors) {
   border-left-color: var(--warn);
   background:
-    linear-gradient(90deg, rgb(163 49 31 / 0.05), transparent 40%), var(--panel);
+    linear-gradient(90deg, rgb(255 107 53 / 0.08), transparent 40%), var(--panel);
 }
 
 .card:hover {
@@ -347,7 +347,7 @@ main {
   font-family: var(--serif);
   font-size: 1.12rem;
   font-weight: 700;
-  color: var(--roast);
+  color: #6366f1;
 }
 
 .card p {
@@ -367,8 +367,8 @@ main {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--roast);
-  background: linear-gradient(180deg, var(--crema), #c9a066);
+  color: #ffffff;
+  background: linear-gradient(180deg, #ff6b35, #ff9500);
   border-radius: 999px;
   padding: 0.18rem 0.7rem;
 }
@@ -415,8 +415,8 @@ main {
 .form-panel select:focus,
 .form-panel input:focus {
   outline: none;
-  border-color: var(--brass);
-  box-shadow: 0 0 0 3px rgb(185 129 47 / 0.22);
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgb(255 107 53 / 0.22);
 }
 
 .form-panel button {
@@ -426,13 +426,13 @@ main {
   padding: 0.65rem 1.6rem;
   border: none;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, var(--brass), var(--brass-deep));
-  color: #fff8ee;
+  background: linear-gradient(135deg, #ff6b35, #6366f1);
+  color: #ffffff;
   font: inherit;
   font-weight: 700;
   letter-spacing: 0.02em;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgb(138 90 28 / 0.3);
+  box-shadow: 0 2px 8px rgb(255 107 53 / 0.3);
   transition: transform 0.1s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
@@ -446,7 +446,7 @@ main {
 }
 
 .form-panel button:focus-visible {
-  outline: 3px solid rgb(185 129 47 / 0.5);
+  outline: 3px solid rgb(255 107 53 / 0.5);
   outline-offset: 2px;
 }
 
@@ -475,7 +475,7 @@ main {
 }
 
 ::selection {
-  background: rgb(185 129 47 / 0.25);
+  background: rgb(255 107 53 / 0.25);
 }
 
 /* tablet & below: collapse the bento to a single column */
