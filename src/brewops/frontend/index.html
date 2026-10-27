@@ -8,60 +8,102 @@
 </head>
 <body>
   <header>
-    <h1>BrewOps</h1>
-    <p class="tagline">Office coffee fleet — telemetry &amp; operations</p>
+    <div class="header-text">
+      <h1>BrewOps</h1>
+      <p class="tagline">Office special-beer taps — telemetry &amp; operations</p>
+    </div>
+    <svg class="banner-art" viewBox="0 0 260 120" role="img" aria-label="Two glasses of beer, clinking">
+      <!-- pint glass -->
+      <g transform="rotate(-8 70 60)">
+        <path d="M38 22 L102 22 L94 108 Q93 114 87 114 L53 114 Q47 114 46 108 Z"
+              fill="#f2a900" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M44 62 L96 62 L94 108 Q93 114 87 114 L53 114 Q47 114 46 108 Z" fill="#c97a00" opacity="0.55"/>
+        <rect x="56" y="40" width="4" height="58" rx="2" fill="#fff" opacity="0.45"/>
+        <circle cx="70" cy="80" r="2.5" fill="#fff" opacity="0.7"/>
+        <circle cx="82" cy="92" r="2" fill="#fff" opacity="0.7"/>
+        <circle cx="76" cy="52" r="2" fill="#fff" opacity="0.7"/>
+        <path d="M34 24 Q34 8 52 12 Q60 2 74 10 Q92 4 100 14 Q108 22 106 26 L36 26 Z"
+              fill="#fffaf0" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+      </g>
+      <!-- beer mug -->
+      <g transform="rotate(8 190 60)">
+        <path d="M150 28 L214 28 L210 106 Q209 114 201 114 L163 114 Q155 114 154 106 Z"
+              fill="#7a3b00" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M214 42 Q246 40 244 68 Q242 92 211 92" fill="none" stroke="#fff"
+              stroke-width="8" stroke-linecap="round"/>
+        <rect x="164" y="46" width="4" height="52" rx="2" fill="#fff" opacity="0.35"/>
+        <path d="M146 30 Q144 12 164 15 Q172 4 186 12 Q204 4 214 14 Q222 20 218 32 L148 32 Z"
+              fill="#fffaf0" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+      </g>
+      <!-- clink sparks -->
+      <g stroke="#ffd700" stroke-width="3" stroke-linecap="round">
+        <line x1="130" y1="8" x2="130" y2="22"/>
+        <line x1="116" y1="14" x2="122" y2="24"/>
+        <line x1="144" y1="14" x2="138" y2="24"/>
+      </g>
+    </svg>
   </header>
 
   <main>
+    <section class="panel filter-bar" aria-label="Date range filter">
+      <label for="filter-from">From</label>
+      <input type="date" id="filter-from">
+      <label for="filter-to">To</label>
+      <input type="date" id="filter-to">
+      <button type="button" id="filter-clear">All time</button>
+      <p id="filter-message" class="message" role="status"></p>
+    </section>
+
     <!-- Zone 1: dashboard -->
     <section id="dashboard">
       <div class="stat-tiles">
         <div class="tile">
           <span class="tile-number" id="total-brews">–</span>
-          <span class="tile-label">brews total</span>
+          <span class="tile-label" id="total-label">pours total</span>
         </div>
         <div class="tile">
           <span class="tile-number" id="brews-today">–</span>
-          <span class="tile-label">brews on last active day</span>
+          <span class="tile-label">pours on last active day</span>
         </div>
         <div class="tile">
-          <span class="tile-number" id="machine-count">–</span>
-          <span class="tile-label">machines</span>
+          <span class="tile-number" id="tap-count">–</span>
+          <span class="tile-label">taps</span>
         </div>
       </div>
 
       <div class="panel">
-        <h2>Per drink</h2>
+        <h2>Per beer</h2>
         <div id="drink-bars"></div>
       </div>
 
       <div class="panel">
-        <h2>Brews over time</h2>
+        <h2>Pours over time</h2>
         <svg id="timeline" viewBox="0 0 600 130" preserveAspectRatio="none" role="img"
-             aria-label="Brews per day"></svg>
+             aria-label="Pours per day"></svg>
+        <p id="timeline-empty" class="timeline-empty" hidden>No pours in this range.</p>
       </div>
 
       <div class="panel">
-        <h2>Machines</h2>
-        <div id="machine-cards" class="cards"></div>
+        <h2>Taps</h2>
+        <div id="tap-cards" class="cards"></div>
       </div>
     </section>
 
-    <!-- Zone 2: log a brew (manual entry for machines without telemetry) -->
+    <!-- Zone 2: log a pour (manual entry for taps without telemetry) -->
     <section class="panel form-panel">
-      <h2>Log a brew</h2>
-      <p class="hint">For machines that don't report their own events — looking at you, Old Faithful.</p>
+      <h2>Log a pour</h2>
+      <p class="hint">For taps that don't report their own events — looking at you, Old Faithful.</p>
       <form id="brew-form">
-        <label for="brew-machine">Machine</label>
-        <select id="brew-machine" required></select>
+        <label for="brew-tap">Tap</label>
+        <select id="brew-tap" required></select>
 
-        <label for="brew-drink">Drink</label>
+        <label for="brew-drink">Beer</label>
         <select id="brew-drink" required></select>
 
         <label for="brew-timestamp">When</label>
         <input type="datetime-local" id="brew-timestamp" required>
 
-        <button type="submit" id="brew-submit">Log brew</button>
+        <button type="submit" id="brew-submit">Log pour</button>
         <p id="brew-message" class="message" role="status"></p>
       </form>
     </section>
@@ -70,12 +112,12 @@
     <section class="panel form-panel">
       <h2>Log maintenance</h2>
       <form id="maintenance-form">
-        <label for="maintenance-machine">Machine</label>
-        <select id="maintenance-machine" required></select>
+        <label for="maintenance-tap">Tap</label>
+        <select id="maintenance-tap" required></select>
 
         <label for="maintenance-type">Type</label>
         <select id="maintenance-type" required>
-          <option value="descale">Descale</option>
+          <option value="clean">Line clean</option>
           <option value="refill">Refill</option>
           <option value="repair">Repair</option>
           <option value="error">Error</option>

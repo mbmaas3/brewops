@@ -1,6 +1,6 @@
 # BrewOps
 
-Telemetry app for the office coffee machines. Python with FastAPI, data in SQLite.
+Telemetry app for the office special-beer taps. Python with FastAPI, data in SQLite.
 
 Run it with `uv run start` and open http://localhost:8123.
 

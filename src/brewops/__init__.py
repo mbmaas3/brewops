@@ -1,1 +1,1 @@
-"""BrewOps — telemetry and operations for the office coffee machines."""
+"""BrewOps — telemetry and operations for the office special-beer taps."""

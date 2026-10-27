@@ -1,4 +1,4 @@
-/* BrewOps — warm coffee-house theme. Plain CSS, no framework, no web fonts. */
+/* BrewOps — plain CSS, no framework, no web fonts. */
 
 :root {
   /* rainbow palette — vibrant & bold */
@@ -12,8 +12,8 @@
   /* rainbow accent — red, orange, yellow, green, cyan, blue, purple */
   --brass: #ff6b35;
   --brass-deep: #ff3b30;
-  --crema: #ffa500;
-  --roast: #2c003e;
+  --foam: #ffa500;
+  --malt: #2c003e;
 
   /* semantic state — rainbow themed */
   --ok: #00d084;
@@ -66,7 +66,7 @@ body > * {
   z-index: 1;
 }
 
-/* ---- header: café signage ---- */
+/* ---- header banner ---- */
 header {
   background:
     linear-gradient(135deg, #ff3b30 0%, #6366f1 50%, #3b82f6 100%);
@@ -74,6 +74,17 @@ header {
   padding: 1.9rem 2rem 1.7rem;
   border-bottom: 3px solid #ff6b35;
   box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.banner-art {
+  flex: 0 0 auto;
+  width: clamp(120px, 22vw, 220px);
+  height: auto;
+  filter: drop-shadow(0 4px 6px rgb(0 0 0 / 0.3));
 }
 
 header h1 {
@@ -133,8 +144,8 @@ main {
   grid-row: 2;
 }
 
-/* fleet gallery spans full width below the hero row */
-#dashboard > .panel:has(#machine-cards) {
+/* tap gallery spans full width below the hero row */
+#dashboard > .panel:has(#tap-cards) {
   grid-column: 1 / -1;
   grid-row: 3;
 }
@@ -179,7 +190,7 @@ main {
   border-radius: 2px;
 }
 
-/* ---- stat tiles: fleet at a glance ---- */
+/* ---- stat tiles: taps at a glance ---- */
 .stat-tiles {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -302,6 +313,23 @@ main {
   overflow: visible;
 }
 
+#timeline[hidden],
+.timeline-empty[hidden] {
+  display: none;
+}
+
+.timeline-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 190px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-family: var(--serif);
+  font-style: italic;
+}
+
 .timeline-bar {
   fill: #ffa500;
   rx: 1.5px;
@@ -312,7 +340,7 @@ main {
   fill: #ff6b35;
 }
 
-/* ---- machine cards: ceramic tiles with a severity stripe ---- */
+/* ---- tap cards: tiles with a severity stripe ---- */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -330,7 +358,7 @@ main {
   transition: transform 0.16s ease, box-shadow 0.16s ease;
 }
 
-/* machines with recent errors read as needing attention */
+/* taps with recent errors read as needing attention */
 .card:has(.errors) {
   border-left-color: var(--warn);
   background:
@@ -384,6 +412,71 @@ main {
 }
 
 /* ---- forms: the order pad ---- */
+.filter-bar {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.filter-bar label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+}
+
+.filter-bar input[type="date"] {
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.filter-bar input[type="date"]:focus {
+  outline: none;
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgb(255 107 53 / 0.22);
+}
+
+.filter-bar button {
+  padding: 0.65rem 1.6rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #ff6b35, #6366f1);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgb(255 107 53 / 0.3);
+  transition: transform 0.1s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.filter-bar button:hover {
+  filter: brightness(1.07);
+  box-shadow: var(--shadow-lift);
+}
+
+.filter-bar button:active {
+  transform: translateY(1px);
+}
+
+.filter-bar button:focus-visible {
+  outline: 3px solid rgb(255 107 53 / 0.5);
+  outline-offset: 2px;
+}
+
+.filter-bar .message {
+  grid-column: auto;
+  margin: 0;
+}
+
 .form-panel form {
   display: grid;
   grid-template-columns: 130px 1fr;
@@ -488,7 +581,7 @@ main {
   }
   #dashboard > .panel:has(#timeline),
   #dashboard > .panel:has(#drink-bars),
-  #dashboard > .panel:has(#machine-cards) {
+  #dashboard > .panel:has(#tap-cards) {
     grid-column: 1;
     grid-row: auto;
   }

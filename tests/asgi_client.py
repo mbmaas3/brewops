@@ -21,6 +21,12 @@ class Response:
 
 
 def request(app, method: str, path: str, body: dict | None = None) -> Response:
+    # Parse query string from path
+    query_string = b""
+    if "?" in path:
+        path, qs = path.split("?", 1)
+        query_string = qs.encode()
+    
     payload = json.dumps(body).encode() if body is not None else b""
     scope = {
         "type": "http",
@@ -30,7 +36,7 @@ def request(app, method: str, path: str, body: dict | None = None) -> Response:
         "scheme": "http",
         "path": path,
         "raw_path": path.encode(),
-        "query_string": b"",
+        "query_string": query_string,
         "root_path": "",
         "headers": [
             (b"host", b"testserver"),

@@ -54,8 +54,45 @@ def parse_timestamp(value: str) -> str:
     return ts.strftime("%Y-%m-%d %H:%M:%S")
 
 
+def parse_date_range(date_from: str | None, date_to: str | None) -> tuple[str | None, str | None]:
+    """Validate and normalize date range parameters.
+    
+    Accepts 'YYYY-MM-DD' strings. Empty strings are treated as None.
+    Rejects unparsable dates and date_from > date_to.
+    Does NOT reject future dates.
+    """
+    # Treat empty strings as None
+    if date_from == "":
+        date_from = None
+    if date_to == "":
+        date_to = None
+    
+    # Parse and validate each non-empty value
+    parsed_from = None
+    if date_from is not None:
+        try:
+            parsed_from = datetime.strptime(date_from.strip(), "%Y-%m-%d")
+            date_from = parsed_from.strftime("%Y-%m-%d")
+        except ValueError:
+            raise HTTPException(400, f"unparsable date {date_from!r}")
+    
+    parsed_to = None
+    if date_to is not None:
+        try:
+            parsed_to = datetime.strptime(date_to.strip(), "%Y-%m-%d")
+            date_to = parsed_to.strftime("%Y-%m-%d")
+        except ValueError:
+            raise HTTPException(400, f"unparsable date {date_to!r}")
+    
+    # Check that date_from is not after date_to
+    if parsed_from is not None and parsed_to is not None and parsed_from > parsed_to:
+        raise HTTPException(400, "date_from is after date_to")
+    
+    return (date_from, date_to)
+
+
 class BrewIn(BaseModel):
-    machine_id: int
+    tap_id: int
     drink_type: str
     timestamp: str
     duration_s: float | None = None
@@ -63,7 +100,7 @@ class BrewIn(BaseModel):
 
 
 class MaintenanceIn(BaseModel):
-    machine_id: int
+    tap_id: int
     type: str
     timestamp: str
     note: str | None = None
@@ -71,20 +108,22 @@ class MaintenanceIn(BaseModel):
 
 
 @app.get("/api/stats")
-def stats(conn: sqlite3.Connection = Depends(get_db)):
-    return queries.get_stats(conn)
+def stats(date_from: str | None = None, date_to: str | None = None, conn: sqlite3.Connection = Depends(get_db)):
+    start, end = parse_date_range(date_from, date_to)
+    return queries.get_stats(conn, start, end)
 
 
-@app.get("/api/machines")
-def machines(conn: sqlite3.Connection = Depends(get_db)):
-    return queries.get_machines(conn)
+@app.get("/api/taps")
+def taps(conn: sqlite3.Connection = Depends(get_db)):
+    return queries.get_taps(conn)
 
 
-@app.get("/api/machines/{machine_id}")
-def machine_health(machine_id: int, conn: sqlite3.Connection = Depends(get_db)):
-    health = queries.get_machine_health(conn, machine_id)
+@app.get("/api/taps/{tap_id}")
+def tap_health(tap_id: int, date_from: str | None = None, date_to: str | None = None, conn: sqlite3.Connection = Depends(get_db)):
+    start, end = parse_date_range(date_from, date_to)
+    health = queries.get_tap_health(conn, tap_id, start, end)
     if health is None:
-        raise HTTPException(404, f"no machine with id {machine_id}")
+        raise HTTPException(404, f"no tap with id {tap_id}")
     return health
 
 
@@ -95,13 +134,13 @@ def drink_types(conn: sqlite3.Connection = Depends(get_db)):
 
 @app.post("/api/brews")
 def log_brew(brew: BrewIn, conn: sqlite3.Connection = Depends(get_db)):
-    if queries.get_machine(conn, brew.machine_id) is None:
-        raise HTTPException(400, f"unknown machine_id {brew.machine_id}")
+    if queries.get_tap(conn, brew.tap_id) is None:
+        raise HTTPException(400, f"unknown tap_id {brew.tap_id}")
     if not queries.drink_type_exists(conn, brew.drink_type):
         raise HTTPException(400, f"unknown drink_type {brew.drink_type!r}")
     timestamp = parse_timestamp(brew.timestamp)
     brew_id = queries.insert_brew(
-        conn, brew.machine_id, brew.drink_type, timestamp,
+        conn, brew.tap_id, brew.drink_type, timestamp,
         brew.duration_s, brew.temp_c, source="manual",
     )
     conn.commit()
@@ -110,13 +149,13 @@ def log_brew(brew: BrewIn, conn: sqlite3.Connection = Depends(get_db)):
 
 @app.post("/api/maintenance")
 def log_maintenance(event: MaintenanceIn, conn: sqlite3.Connection = Depends(get_db)):
-    if queries.get_machine(conn, event.machine_id) is None:
-        raise HTTPException(400, f"unknown machine_id {event.machine_id}")
-    if event.type not in ("descale", "refill", "repair", "error"):
+    if queries.get_tap(conn, event.tap_id) is None:
+        raise HTTPException(400, f"unknown tap_id {event.tap_id}")
+    if event.type not in ("clean", "refill", "repair", "error"):
         raise HTTPException(400, f"unknown maintenance type {event.type!r}")
     timestamp = parse_timestamp(event.timestamp)
     event_id = queries.insert_maintenance(
-        conn, event.machine_id, event.type, timestamp, event.note, event.error_code
+        conn, event.tap_id, event.type, timestamp, event.note, event.error_code
     )
     conn.commit()
     return {"id": event_id, "status": "logged"}

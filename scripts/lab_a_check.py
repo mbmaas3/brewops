@@ -1,11 +1,11 @@
-"""Lab A finish line: does each machine's health show its "specialty"
-(its most-brewed drink)? Run from the repo root:
+"""Lab A finish line: does each tap's health show its "specialty"
+(its most-poured beer)? Run from the repo root:
 
     uv run scripts/lab_a_check.py
 
-Green means: /api/machines/{id} now reports each machine's most-brewed drink,
-and it's the right one for every machine — so the query is real, not hardcoded.
-Then open the dashboard and confirm the specialty shows on each machine card.
+Green means: /api/taps/{id} now reports each tap's most-poured beer,
+and it's the right one for every tap — so the query is real, not hardcoded.
+Then open the dashboard and confirm the specialty shows on each tap card.
 """
 
 import json
@@ -61,23 +61,23 @@ def start_app_if_needed() -> subprocess.Popen | None:
 
 
 def expected_specialties(db_path: str) -> dict[int, tuple[str, str]]:
-    """Ground truth from the database: {machine_id: (drink_key, drink_label)}
-    for every machine that has at least one brew. Ties break on drink name so
+    """Ground truth from the database: {tap_id: (drink_key, drink_label)}
+    for every tap that has at least one pour. Ties break on drink name so
     the answer is deterministic."""
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     rows = conn.execute(
         """
-        SELECT b.machine_id, dt.name AS key, dt.label AS label, COUNT(*) AS n
+        SELECT b.tap_id, dt.name AS key, dt.label AS label, COUNT(*) AS n
         FROM brew_events b
         JOIN drink_types dt ON dt.name = b.drink_type
-        GROUP BY b.machine_id, dt.id
+        GROUP BY b.tap_id, dt.id
         """
     ).fetchall()
     conn.close()
     best: dict[int, tuple[int, str, str]] = {}
     for r in rows:
-        mid = r["machine_id"]
+        mid = r["tap_id"]
         cur = best.get(mid)
         # higher count wins; on a tie the alphabetically-first drink key wins
         if cur is None or r["n"] > cur[0] or (r["n"] == cur[0] and r["key"] < cur[1]):
@@ -97,11 +97,11 @@ def string_leaves(value) -> list[str]:
 
 
 def find_specialty(health: dict, key: str, label: str) -> str | None:
-    """Look for the machine's specialty among fields the participant added.
+    """Look for the tap's specialty among fields the participant added.
     Returns 'label' or 'key' depending on which form they exposed, or None."""
     added = {k: v for k, v in health.items() if k not in BASE_HEALTH_FIELDS}
     leaves = [s.strip() for s in string_leaves(added)]
-    if label in leaves:  # the display label, exactly ("Espresso", "Hot water")
+    if label in leaves:  # the display label, exactly ("NEIPA", "Barleywine")
         return "label"
     lowered = [s.lower() for s in leaves]
     if label.lower() in lowered or key.lower() in lowered:
@@ -121,19 +121,19 @@ def main() -> int:
     proc = start_app_if_needed()
     try:
         showed_key_only = []
-        for machine_id, (key, label) in sorted(expected.items()):
+        for tap_id, (key, label) in sorted(expected.items()):
             try:
-                health = get_json(f"/api/machines/{machine_id}")
+                health = get_json(f"/api/taps/{tap_id}")
             except urllib.error.HTTPError as e:
-                print(f"[FAIL] GET /api/machines/{machine_id} failed ({e.code})")
+                print(f"[FAIL] GET /api/taps/{tap_id} failed ({e.code})")
                 return 1
             form = find_specialty(health, key, label)
-            name = health.get("name", f"machine {machine_id}")
+            name = health.get("name", f"tap {tap_id}")
             if form is None:
                 print(f"[FAIL] {name}: no specialty in the health payload.")
-                print(f"       Expected its most-brewed drink, {label!r}, to appear in")
-                print(f"       /api/machines/{machine_id}. Add it in get_machine_health,")
-                print("       then render it on the machine card in the frontend.")
+                print(f"       Expected its most-poured beer, {label!r}, to appear in")
+                print(f"       /api/taps/{tap_id}. Add it in get_tap_health,")
+                print("       then render it on the tap card in the frontend.")
                 return 1
             print(f"[OK] {name}: specialty = {label}")
             if form == "key":
@@ -141,12 +141,12 @@ def main() -> int:
 
         print()
         if showed_key_only:
-            print("[TIP] The specialty is correct, but you're exposing the machine key")
-            print(f"      (e.g. 'espresso') rather than the display label ('Espresso') for:")
+            print("[TIP] The specialty is correct, but you're exposing the raw key")
+            print(f"      (e.g. 'neipa') rather than the display label ('NEIPA') for:")
             print(f"      {', '.join(showed_key_only)}. Consider showing the label people read.")
             print()
         print("[DONE] Lab A complete! Now open http://localhost:8123 and confirm each")
-        print("       machine card shows its Specialty — that's the part the API can't")
+        print("       tap card shows its Specialty — that's the part the API can't")
         print("       check for you.")
         return 0
     finally:

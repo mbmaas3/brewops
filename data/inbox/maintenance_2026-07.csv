@@ -1,9 +1,9 @@
-machine_id,type,timestamp,note,error_code
-2,refill,2026-07-01 07:30:00,beans + water,
-4,error,2026-07-02 09:40:00,pump pressure low,E13
-4,refill,2026-07-02 16:45:00,beans,
-1,descale,2026-07-02 17:45:00,descale light had been on for a week,
-2,refill,2026-07-03 07:15:00,beans + water,
-4,error,2026-07-03 08:05:00,pump pressure low,E13
-1,refill,2026-07-04 16:30:00,water tank,
-4,refill,2026-07-04 16:45:00,"beans, wiped tray",
+tap_id,type,timestamp,note,error_code
+2,refill,2026-07-01 07:30:00,keg swap + CO2 bottle,
+4,error,2026-07-02 09:40:00,CO2 pressure low,E13
+4,refill,2026-07-02 16:45:00,keg swap,
+1,clean,2026-07-02 17:45:00,line-clean reminder had been on for a week,
+2,refill,2026-07-03 07:15:00,keg swap + CO2 bottle,
+4,error,2026-07-03 08:05:00,CO2 pressure low,E13
+1,refill,2026-07-04 16:30:00,keg swap,
+4,refill,2026-07-04 16:45:00,"keg swap, wiped drip tray",

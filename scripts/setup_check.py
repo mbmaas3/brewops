@@ -62,10 +62,10 @@ def check_seed() -> bool:
         return report("uv run seed", False, (proc.stderr or proc.stdout).strip()[:300])
     conn = sqlite3.connect("brewops.db")
     brews = conn.execute("SELECT COUNT(*) FROM brew_events").fetchone()[0]
-    machines = conn.execute("SELECT COUNT(*) FROM machines").fetchone()[0]
+    taps = conn.execute("SELECT COUNT(*) FROM taps").fetchone()[0]
     conn.close()
-    ok = brews > 1000 and machines == 4
-    return report("uv run seed", ok, f"{brews} brew events, {machines} machines")
+    ok = brews > 1000 and taps == 4
+    return report("uv run seed", ok, f"{brews} brew events, {taps} taps")
 
 
 def check_api_smoke() -> bool:

@@ -1,40 +1,40 @@
-machine_id,type,timestamp,note,error_code
-4,error,2026-06-01 12:40:00,pump pressure low,E13
-4,refill,2026-06-03 07:15:00,beans + water,
-2,refill,2026-06-03 16:30:00,water tank,
-4,error,2026-06-04 14:35:00,pump pressure low,E13
-1,refill,2026-06-04 16:45:00,beans + water,
-1,refill,2026-06-06 07:45:00,water tank,
-2,refill,2026-06-06 16:15:00,water tank,
-4,refill,2026-06-06 16:15:00,beans + water,
-2,refill,2026-06-08 07:30:00,beans + water,
-4,error,2026-06-08 16:11:00,pump pressure low,E13
-1,refill,2026-06-10 07:45:00,"beans, wiped tray",
-4,refill,2026-06-10 07:45:00,water tank,
-4,descale,2026-06-10 08:30:00,descale during pump check,
-4,error,2026-06-11 16:22:00,pump pressure low,E13
-2,refill,2026-06-12 16:15:00,water tank,
-4,refill,2026-06-13 16:30:00,beans + water,
-2,refill,2026-06-14 07:45:00,"beans, wiped tray",
-1,refill,2026-06-14 16:30:00,water tank,
-4,refill,2026-06-15 07:30:00,beans + water,
-2,refill,2026-06-16 16:30:00,beans + water,
-4,error,2026-06-17 15:25:00,pump pressure low,E13
-4,refill,2026-06-18 07:15:00,beans,
-1,refill,2026-06-18 07:30:00,beans + water,
-2,refill,2026-06-18 07:30:00,beans,
-2,refill,2026-06-20 07:45:00,"beans, wiped tray",
-4,error,2026-06-20 09:27:00,pump pressure low,E13
-4,repair,2026-06-20 14:00:00,replaced pump seal — again,
-4,refill,2026-06-20 16:15:00,beans + water,
-1,refill,2026-06-20 16:30:00,beans + water,
-2,refill,2026-06-23 07:30:00,beans,
-1,refill,2026-06-24 07:45:00,beans + water,
-4,refill,2026-06-24 07:45:00,"beans, wiped tray",
-4,error,2026-06-25 14:08:00,water flow sensor,E07
-1,refill,2026-06-26 16:45:00,beans,
-2,refill,2026-06-26 16:45:00,beans + water,
-4,error,2026-06-27 12:15:00,water flow sensor,E07
-4,refill,2026-06-28 07:15:00,water tank,
-2,refill,2026-06-28 16:45:00,water tank,
-1,refill,2026-06-30 16:30:00,beans,
+tap_id,type,timestamp,note,error_code
+4,error,2026-06-01 12:40:00,CO2 pressure low,E13
+4,refill,2026-06-03 07:15:00,keg swap + CO2 bottle,
+2,refill,2026-06-03 16:30:00,keg swap,
+4,error,2026-06-04 14:35:00,CO2 pressure low,E13
+1,refill,2026-06-04 16:45:00,keg swap + CO2 bottle,
+1,refill,2026-06-06 07:45:00,keg swap,
+2,refill,2026-06-06 16:15:00,keg swap,
+4,refill,2026-06-06 16:15:00,keg swap + CO2 bottle,
+2,refill,2026-06-08 07:30:00,keg swap + CO2 bottle,
+4,error,2026-06-08 16:11:00,CO2 pressure low,E13
+1,refill,2026-06-10 07:45:00,"keg swap, wiped drip tray",
+4,refill,2026-06-10 07:45:00,keg swap,
+4,clean,2026-06-10 08:30:00,line clean during pressure check,
+4,error,2026-06-11 16:22:00,CO2 pressure low,E13
+2,refill,2026-06-12 16:15:00,keg swap,
+4,refill,2026-06-13 16:30:00,keg swap + CO2 bottle,
+2,refill,2026-06-14 07:45:00,"keg swap, wiped drip tray",
+1,refill,2026-06-14 16:30:00,keg swap,
+4,refill,2026-06-15 07:30:00,keg swap + CO2 bottle,
+2,refill,2026-06-16 16:30:00,keg swap + CO2 bottle,
+4,error,2026-06-17 15:25:00,CO2 pressure low,E13
+4,refill,2026-06-18 07:15:00,keg swap,
+1,refill,2026-06-18 07:30:00,keg swap + CO2 bottle,
+2,refill,2026-06-18 07:30:00,keg swap,
+2,refill,2026-06-20 07:45:00,"keg swap, wiped drip tray",
+4,error,2026-06-20 09:27:00,CO2 pressure low,E13
+4,repair,2026-06-20 14:00:00,replaced coupler seal — again,
+4,refill,2026-06-20 16:15:00,keg swap + CO2 bottle,
+1,refill,2026-06-20 16:30:00,keg swap + CO2 bottle,
+2,refill,2026-06-23 07:30:00,keg swap,
+1,refill,2026-06-24 07:45:00,keg swap + CO2 bottle,
+4,refill,2026-06-24 07:45:00,"keg swap, wiped drip tray",
+4,error,2026-06-25 14:08:00,flow sensor,E07
+1,refill,2026-06-26 16:45:00,keg swap,
+2,refill,2026-06-26 16:45:00,keg swap + CO2 bottle,
+4,error,2026-06-27 12:15:00,flow sensor,E07
+4,refill,2026-06-28 07:15:00,keg swap,
+2,refill,2026-06-28 16:45:00,keg swap,
+1,refill,2026-06-30 16:30:00,keg swap,

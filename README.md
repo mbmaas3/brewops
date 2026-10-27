@@ -1,13 +1,13 @@
-# BrewOps ☕
+# BrewOps 🍺
 
-Telemetry and operations for the office coffee machines.
+Telemetry and operations for the office special-beer taps.
 
-Most of the fleet emits event logs as CSV (brews, maintenance, error codes). The old
-floor-2 machine emits nothing, so humans log it by hand in the UI. Both paths land in
-SQLite, and a dashboard shows consumption stats and machine health.
+Most of the taps emit event logs as CSV (pours, maintenance, error codes). The old
+floor-2 tap emits nothing, so humans log it by hand in the UI. Both paths land in
+SQLite, and a dashboard shows consumption stats and tap health.
 
 This repo is the hands-on codebase for an agentic-coding workshop. There is nothing
-secret in here — no credentials, no real data, no hidden answers. The coffee is fictional.
+secret in here — no credentials, no real data, no hidden answers. The beer is fictional.
 
 ## Requirements
 

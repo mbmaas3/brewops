@@ -29,7 +29,7 @@ def test_index_served(db):
     r = request(get_app(), "GET", "/")
     assert r.status == 200
     assert "text/html" in r.headers.get("content-type", "")
-    assert "Log a brew" in r.text
+    assert "Log a pour" in r.text
     assert "Log maintenance" in r.text
 
 
@@ -53,3 +53,17 @@ def test_frontend_has_no_external_resources():
             content = content.replace(a, "")
         assert "http://" not in content, f.name
         assert "https://" not in content, f.name
+
+
+def test_frontend_contains_filter_elements(db):
+    r = request(get_app(), "GET", "/")
+    assert r.status == 200
+    assert "filter-from" in r.text
+    assert "filter-to" in r.text
+    assert "timeline-empty" in r.text
+
+
+def test_app_js_references_date_filter(db):
+    r = request(get_app(), "GET", "/app.js")
+    assert r.status == 200
+    assert "date_from" in r.text
